@@ -24,7 +24,7 @@
 Sayı:
 <input type="number" value="0" onchange="out.innerText=value">
  
-<button onclick="increment()">Arttır</button>
+<button onclick="arttırma()">Arttır</button>
 <p class="out">1</p>
 
 <hr>
@@ -38,14 +38,14 @@ Sayı:
 <script>
 "use strict";
 // JavaScript comment
-function ArttırmaFonksiyonu() {
+function arttırma() {
     let c = Number(out.innerText)+1
     console.log("sayac = "+c)
     out.innerText = c
 }
 document.querySelector('h2').innerText = document.title
-document.querySelector('pre').innerText = increment
-const out = document.querySelector('.out'); increment()
+document.querySelector('pre').innerText = arttırma
+const out = document.querySelector('.out'); arttırma()
 </script>
 
 
