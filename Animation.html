@@ -24,13 +24,21 @@
   let cv = document.createElement("canvas")
   let cx = cv.getContext("2d");
   cv.width = 2000; document.body.append(cv)
-  const myImage = document.createElement("img");
+  const i1 = document.createElement("img");
+  const i2 = document.createElement("img");
+  const i3 = document.createElement("img");
+  const i4 = document.createElement("img");
+  const i5 = document.createElement("img");
+  const i6 = document.createElement("img");
+  const i7 = document.createElement("img");
+  const i8 = document.createElement("img");
+  const i9 = document.createElement("img");
+  const i10 = document.createElement("img");
 
   const btn_start = document.getElementById("startButton");
   btn_start.addEventListener("click", running);
 
   function running() {
- 
       u1 = 'https://efsanalbas.github.io/advancedProgramming/images2/1.png';
       u2 = 'https://efsanalbas.github.io/advancedProgramming/images2/2.png';
       u3 = 'https://efsanalbas.github.io/advancedProgramming/images2/3.png';
@@ -43,18 +51,19 @@
       u10 = 'https://efsanalbas.github.io/advancedProgramming/images2/10.png';
 
       var urls = [u1, u2, u3, u4, u5, u6, u7, u8, u9, u10];
+      var images=[i1,i2,i3,i4,i5,i6,i7,i8,i9,i10];
       for (let i = 0; i < urls.length; i++) {
         fetch(urls[i])
           .then((response) => response.blob())
           .then((myBlob) => {
             const objectURL = URL.createObjectURL(myBlob);
-            myImage.src = objectURL;
-            myImage.onload = () => { setInterval(draw, 200) }
+            images[i].src= objectURL
+            images[i].onload = () => { setInterval(draw, 200) }
             let W = 87, H = 124, k = 0, x = 0;
     let draw = () => {
               cx.clearRect(x, 0, W, H);
               x = (x + W) % cv.width;
-              cx.drawImage(myImage,
+              cx.drawImage(images[i],
                 // source rectangle
                 k * W, 0, W, H,
                 // destination rectangle
@@ -63,9 +72,9 @@
             }
           });
       }
-    
+    }
   
-  }
+  
 
 </script>
 
