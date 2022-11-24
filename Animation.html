@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<!-- saved from url=(0045)https://blm305.github.io/2022/work/fetch.html -->
+<html lang="en-US">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <meta name="viewport" content="width=device-width">
+  <title>Animation </title>
+
+  <style>
+    /* CSS comment */
+  </style>
+
+</head>
+
+<body>
+  <!-- HTML comment: Modify all items marked xxx -->
+  <button id="startButton">Start</button>
+  <button id="stopButton">Stop</button>
+  <canvas></canvas>
+
+</body>
+<script>
+  let cv = document.createElement("canvas")
+  let cx = cv.getContext("2d");
+  cv.width = 2000; document.body.append(cv)
+  const myImage = document.createElement("img");
+
+  const btn_start = document.getElementById("startButton");
+  btn_start.addEventListener("click", running);
+
+  function running() {
+    if (flag = true) {
+      u1 = 'https://efsanalbas.github.io/advancedProgramming/images2/1.png';
+      u2 = 'https://efsanalbas.github.io/advancedProgramming/images2/2.png';
+      u3 = 'https://efsanalbas.github.io/advancedProgramming/images2/3.png';
+      u4 = 'https://efsanalbas.github.io/advancedProgramming/images2/4.png';
+      u5 = 'https://efsanalbas.github.io/advancedProgramming/images2/5.png';
+      u6 = 'https://efsanalbas.github.io/advancedProgramming/images2/6.png';
+      u7 = 'https://efsanalbas.github.io/advancedProgramming/images2/7.png';
+      u8 = 'https://efsanalbas.github.io/advancedProgramming/images2/8.png';
+      u9 = 'https://efsanalbas.github.io/advancedProgramming/images2/9.png';
+      u10 = 'https://efsanalbas.github.io/advancedProgramming/images2/10.png';
+
+      var urls = [u1, u2, u3, u4, u5, u6, u7, u8, u9, u10];
+      for (let i = 0; i < urls.length; i++) {
+        fetch(urls[i])
+          .then((response) => response.blob())
+          .then((myBlob) => {
+            const objectURL = URL.createObjectURL(myBlob);
+            myImage.src = objectURL;
+            myImage.onload = () => { setInterval(draw, 200) }
+            let W = 87, H = 124, k = 0, x = 0;
+    let draw = () => {
+              cx.clearRect(x, 0, W, H);
+              x = (x + W) % cv.width;
+              cx.drawImage(myImage,
+                // source rectangle
+                k * W, 0, W, H,
+                // destination rectangle
+                x, 0, W, H);
+              k = (k + 1) % 1;
+            }
+          });
+      }
+    }
+  
+  }
+
+</script>
+
+</html>
