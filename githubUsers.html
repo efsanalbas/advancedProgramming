@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <title>GitHub Users</title>
+  <style>
+    body {
+        max-width: 440px;
+    }
+    img {
+        padding-right: 10px; 
+        width: 200px;
+        
+    }
+    pre { overflow-x: auto; }
+    #out { color: blue; }
+  </style>
+</head>
+
+<body>
+
+<h2 id=title></h2>
+<input type=text id=usr value=efsanalbas onChange="readUser()">
+<p id=out>data</p>
+<b id=repoName>data</b>
+<p id=gituser>data</p>
+<p id=location>Location: </p>
+<p id=company>Company: </p>
+<a id=repoLink target="NewTab"></a><br>
+<b>Sample code</b>
+<hr>
+<pre id=sample></pre>
+<p>Ref: 
+  <a href="https://docs.github.com/en/rest/reference/rate-limit" target=NewTab>GitHub API</a> &emsp;
+</p>
+
+<script>
+"use strict";
+function error(e) {
+    out.innerText = e
+    out.style.color = 'red'
+    console.error(e)
+}
+function cause(s) {
+  switch (s) {
+    case 403:
+      return 'Rate limit exceeded'
+    case 404:
+      return usr.value+' not found'
+    default:
+      return 'Status '+s
+  }
+}
+async function toJSON(url) {
+  try {
+    let r = await fetch(url)
+    if (!r.ok) throw cause(r.status)
+    return r.json()
+  } catch (e) {
+    error(e)
+  }
+}
+async function readUser() {
+    const URL = "https://api.github.com/users/"
+    let u = await toJSON(URL+usr.value)
+    if (!u || !u.login) return
+    out.style.color = ''
+    //start with avatar
+    out.innerHTML =`<img src="${u.avatar_url}">`
+    //add name 
+    let s = u.name
+    repoName.innerHTML = s;
+    console.log(s)
+    // add user
+    let user = u.login
+    gituser.innerHTML = user
+    gituser.style.color='grey'
+    //link to GitHub 
+    let h = "github.com/"+u.login
+    repoLink.href = "https://"+h
+    repoLink.innerText = h
+    // add location
+    let l = u.location
+    if(l==null)
+    location.innerText = "Tanımlanmamış"
+    else
+    location.innerHTML = l
+   //add company
+    let c = u.company
+    company.innerHTML = c
+}
+    title.innerText = document.title
+    sample.innerText = toJSON +'\n'+ readUser
+    readUser()
+</script>
+
+</body>
+</html>
