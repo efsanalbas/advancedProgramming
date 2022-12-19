@@ -150,11 +150,12 @@
             function buttonUret(harfArray) {
                 var arananKelime = document.getElementById("arananKelime");
                 arananKelime.innerHTML = "";
+                cikanHarf.value = "";
                 for(let item of items){
                     item.style.display = 'none';
                 }
                 j=0;
-                cikanHarf.innerHTML = "";
+               
 
                 harfleriGoster();
                 for (let i = 0; i < harfArray.length; i++) {
