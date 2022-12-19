@@ -21,7 +21,6 @@
         .item {
             display: none;
         }
-
         body {
             background-color: #4982bb;
             color: #fff;
@@ -29,23 +28,19 @@
             width: 50vh;
             align-items: leading;
         }
-
         .hangingMan {
             padding: 20px 20px;
             height: 450px;
             width: 450px;
             position: relative;
         }
-
         .svg {
             fill: transparent;
             stroke: rgb(255, 255, 255);
             stroke-width: 3px;
         }
-
         .alphabet {
             align-items: leading;
-
         }
     </style>
     <title>HangingMan</title>
@@ -104,7 +99,7 @@
             <button onclick="onClick(id)" id="button#id28.btn" type="button" class="btn">Z</button>
         </div>
         <p>
-            <button onclick="yeniOyun()" type="button" class="yeniOyun">Yeni Oyun</button>
+            <button onclick=yeniOyun() type="button" class="yeniOyun">Yeni Oyun</button>
         </p>
         <div>
             <textarea id="cikanHarfler" class="control" cols="20" rows="5"></textarea>
@@ -123,21 +118,45 @@
             } else {
                 console.log('service worker is not supported');
             }
+
             temp = false;
+            flag = false;
             var j = 0;
             var countDogru = 0;
             const kelimeler = ["GITHUB", "HTML", "CSS", "PROGRAMMING", "CODE", "JAVASCRIPT", "COMPUTER"];
             var cikanHarf = document.getElementById("cikanHarfler");
             var harfler = document.querySelectorAll(".harf");
-            kelime = kelimeler[Math.floor(Math.random() * kelimeler.length)];
-            console.log(kelime);
-            harfArray = kelime.split("");
-            buttonUret(harfArray);
+            var items = document.querySelectorAll('.item');
+
             function yeniOyun() {
-                buttonSil(harfArray);
+                kelime = kelimeler[Math.floor(Math.random() * kelimeler.length)];
+                console.log(kelime);
+                harfArray = kelime.split("");
                 buttonUret(harfArray);
             }
+
+
+            function harfleriGizle() {
+                for (let k of harfler) {
+                    k.setAttribute("disabled", "disabled");
+                }
+            }
+            function harfleriGoster() {
+                  for (let s of harfler) {
+                    s.removeAttribute("disabled");
+                }
+            }
+
             function buttonUret(harfArray) {
+                var arananKelime = document.getElementById("arananKelime");
+                arananKelime.innerHTML = "";
+                for(let item of items){
+                    item.style.display = 'none';
+                }
+                j=0;
+                cikanHarf.innerHTML = "";
+
+                harfleriGoster();
                 for (let i = 0; i < harfArray.length; i++) {
                     var harf = document.createElement("button");
                     harf.setAttribute("type", "button");
@@ -146,18 +165,11 @@
                     arananKelime.appendChild(harf);
                 }
             }
-            function buttonSil(harfArray) {
-                for (let i = 0; i < harfArray.length; i++) {
-                    var harf = document.createElement("button");
-                    harf.removeAttribute("type", "button");
-                    harf.parentNode.removeChild(harf);
-                }
-            }
+
             function onClick(id) {
                 var buttonHarf = document.getElementById(id);
                 var arananHarfler = document.querySelectorAll(".arananHarf");
                 cikanHarf.value += buttonHarf.textContent + ",";
-                var items = document.querySelectorAll('.item');
                 temp = true;
                 var count = 0;
                 var dogruHarf = false;
@@ -174,6 +186,7 @@
                 }
                 if (countDogru == harfArray.length) {
                     window.alert("CONGRATULATIONS, YOU WIN.");
+                    harfleriGizle();
                 }
                 if (dogruHarf == false) {
                     if (buttonHarf.textContent != harfArray[flag]) count++;
@@ -186,9 +199,12 @@
                     }
                     if (j == 6) {
                         window.alert("GAME OVER.");
+                        harfleriGizle();
+
                     }
                 }
             }
+
 
         </script>
 </body>
