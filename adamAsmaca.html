@@ -107,20 +107,20 @@
             <textarea id="cikanHarfler" class="control" cols="20" rows="5"></textarea>
         </div>
         <script>
-                 if ('serviceWorker' in navigator) {
-                     window.addEventListener('load', function () {
-                         navigator.serviceWorker.register('service-worker.js').then(function (registration) {
-                             console.log('Registered!');
-                         }, function (err) {
-                             console.log('ServiceWorker registration failed: ', err);
-                         }).catch(function (err) {
-                             console.log(err);
-                         });
-                     });
-                 } else {
-                     console.log('service worker is not supported');
-                 }
-
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function () {
+                    navigator.serviceWorker.register('service-worker.js').then(function (registration) {
+                        console.log('Registered!');
+                    }, function (err) {
+                        console.log('ServiceWorker registration failed: ', err);
+                    }).catch(function (err) {
+                        console.log(err);
+                    });
+                });
+            } else {
+                console.log('service worker is not supported');
+            }
+            var buttonHarf;
             temp = false;
             flag = false;
             var j = 0;
@@ -153,6 +153,10 @@
                 var arananKelime = document.getElementById("arananKelime");
                 arananKelime.innerHTML = "";
                 cikanHarf.value = "";
+                var buttonHarf= document.querySelectorAll(".btn");
+               for(let i of buttonHarf){
+                    i.disabled = false;
+               }
                 for (let item of items) {
                     item.style.display = 'none';
                 }
@@ -169,13 +173,15 @@
             }
 
             function onClick(id) {
-                var buttonHarf = document.getElementById(id);
+             buttonHarf = document.getElementById(id);
                 var arananHarfler = document.querySelectorAll(".arananHarf");
                 cikanHarf.value += buttonHarf.textContent + ",";
                 temp = true;
                 var count = 0;
+                var k = 0;
                 var dogruHarf = false;
                 flag = 0;
+                buttonHarf.disabled = true;
                 for (let i in harfArray) {
                     if (buttonHarf.textContent == harfArray[i]) {
                         arananHarfler[i].textContent = buttonHarf.textContent;
@@ -200,13 +206,15 @@
                         j++;
                     }
                     if (j == 6) {
+                        for (let i of arananHarfler) {
+                            i.textContent = harfArray[k];
+                            k++;
+                        }
                         window.alert("GAME OVER.");
                         harfleriGizle();
-
                     }
                 }
             }
-
 
         </script>
 </body>
