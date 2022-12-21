@@ -2,11 +2,13 @@
 <html lang="en">
 
 <head>
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- Add to home screen for Safari on iOS -->
+    <!-- <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="hangingMan">
     <meta name="msapplication-TileImage" content="https://efsanalbas.github.io/advancedProgramming/image3.png">
-    <meta name="msapplication-TileColor" content="#2F3BA2">
+    <meta name="msapplication-TileColor" content="#2F3BA2">-->
+    <link rel="manifest" href="/manifest.json">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,14 +25,14 @@
             background-color: #4982bb;
             color: #fff;
             height: 80vh;
-            width: 50vh;
+            width: 40vh;
             align-items: leading;
         }
 
         .hangingMan {
             padding: 20px 20px;
             height: 450px;
-            width: 450px;
+            width: 300px;
             position: relative;
         }
 
@@ -72,29 +74,23 @@
             <button onclick="onClick(id)" id="button#id.btn" type="button" class="btn">A</button>
             <button onclick="onClick(id)" id="button#id1.btn" type="button" class="btn">B</button>
             <button onclick="onClick(id)" id="button#id2.btn" type="button" class="btn">C</button>
-            <button onclick="onClick(id)" id="button#id3.btn" type="button" class="btn">Ç</button>
             <button onclick="onClick(id)" id="button#id4.btn" type="button" class="btn">D</button>
             <button onclick="onClick(id)" id="button#id5.btn" type="button" class="btn">E</button>
             <button onclick="onClick(id)" id="button#id6.btn" type="button" class="btn">F</button>
             <button onclick="onClick(id)" id="button#id7.btn" type="button" class="btn">G</button>
-            <button onclick="onClick(id)" id="button#id8.btn" type="button" class="btn">Ğ</button>
             <button onclick="onClick(id)" id="button#id9.btn" type="button" class="btn">H</button>
             <button onclick="onClick(id)" id="button#id10.btn" type="button" class="btn">I</button>
-            <button onclick="onClick(id)" id="button#id11.btn" type="button" class="btn">İ</button>
             <button onclick="onClick(id)" id="button#id12.btn" type="button" class="btn">J</button>
             <button onclick="onClick(id)" id="button#id13.btn" type="button" class="btn">K</button>
             <button onclick="onClick(id)" id="button#id14.btn" type="button" class="btn">L</button>
             <button onclick="onClick(id)" id="button#id15.btn" type="button" class="btn">M</button>
             <button onclick="onClick(id)" id="button#id16.btn" type="button" class="btn">N</button>
             <button onclick="onClick(id)" id="button#id17.btn" type="button" class="btn">O</button>
-            <button onclick="onClick(id)" id="button#id18.btn" type="button" class="btn">Ö</button>
             <button onclick="onClick(id)" id="button#id19.btn" type="button" class="btn">P</button>
             <button onclick="onClick(id)" id="button#id20.btn" type="button" class="btn">R</button>
             <button onclick="onClick(id)" id="button#id21.btn" type="button" class="btn">S</button>
-            <button onclick="onClick(id)" id="button#id22.btn" type="button" class="btn">Ş</button>
             <button onclick="onClick(id)" id="button#id23.btn" type="button" class="btn">T</button>
             <button onclick="onClick(id)" id="button#id24.btn" type="button" class="btn">U</button>
-            <button onclick="onClick(id)" id="button#id25.btn" type="button" class="btn">Ü</button>
             <button onclick="onClick(id)" id="button#id26.btn" type="button" class="btn">V</button>
             <button onclick="onClick(id)" id="button#id27.btn" type="button" class="btn">Y</button>
             <button onclick="onClick(id)" id="button#id28.btn" type="button" class="btn">Z</button>
@@ -106,20 +102,20 @@
             <textarea id="cikanHarfler" class="control" cols="20" rows="5"></textarea>
         </div>
         <script>
-            if ('serviceWorker' in navigator) {
-                window.addEventListener('load', function () {
-                    navigator.serviceWorker.register('service-worker.js').then(function (registration) {
-                        console.log('Registered!');
-                    }, function (err) {
-                        console.log('ServiceWorker registration failed: ', err);
-                    }).catch(function (err) {
-                        console.log(err);
-                    });
-                });
-            } else {
-                console.log('service worker is not supported');
-            }
-            var buttonHarf;
+            window.addEventListener('load', async e => {
+                await fetchTrending();
+
+                if ('serviceWorker' in navigator) {
+                    try {
+                        navigator.serviceWorker.register('service-worker.js');
+                        console.log('SW registered');
+
+                    } catch (error) {
+                        console.log('SW failed');
+
+                    }
+                }
+            });
             temp = false;
             flag = false;
             var j = 0;
@@ -152,10 +148,10 @@
                 var arananKelime = document.getElementById("arananKelime");
                 arananKelime.innerHTML = "";
                 cikanHarf.value = "";
-                var buttonHarf= document.querySelectorAll(".btn");
-               for(let i of buttonHarf){
+                var buttonHarf = document.querySelectorAll(".btn");
+                for (let i of buttonHarf) {
                     i.disabled = false;
-               }
+                }
                 for (let item of items) {
                     item.style.display = 'none';
                 }
@@ -172,7 +168,7 @@
             }
 
             function onClick(id) {
-             buttonHarf = document.getElementById(id);
+                var buttonHarf = document.getElementById(id);
                 var arananHarfler = document.querySelectorAll(".arananHarf");
                 cikanHarf.value += buttonHarf.textContent + ",";
                 temp = true;
