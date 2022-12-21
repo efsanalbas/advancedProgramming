@@ -1,5 +1,5 @@
-const CACHE ='https://efsanalbas.github.io/advancedProgramming/hangingMan.html'
-const FILES = ['https://efsanalbas.github.io/advancedProgramming/hangingMan.html']
+const CACHE ='https://efsanalbas.github.io/advancedProgramming/adamasmaca.html'
+const FILES = ['https://efsanalbas.github.io/advancedProgramming/adamasmaca.html']
 function installCB(e) {
   e.waitUntil(
     caches.open(CACHE)
