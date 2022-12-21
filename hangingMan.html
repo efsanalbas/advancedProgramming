@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="https://efsanalbas.github.io/advancedProgramming/image3.png">
+    <link rel="manifest" href="https://efsanalbas.github.io/advancedProgramming/manifest.json">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .item {
+            display: none;
+        }
+
+        body {
+            background-color: #4982bb;
+            color: #fff;
+            height: 80vh;
+            width: 40vh;
+            align-items: leading;
+        }
+
+        .hangingMan {
+            padding: 20px 20px;
+            height: 450px;
+            width: 400px;
+            position: relative;
+        }
+
+        .svg {
+            fill: transparent;
+            stroke: rgb(255, 255, 255);
+            stroke-width: 3px;
+        }
+
+        .alphabet {
+            align-items: leading;
+        }
+    </style>
+    <title>HangingMan</title>
+</head>
+
+<body>
+    <h1>HANGING MAN </h1>
+    <div class="hangingMan">
+        <svg height="270" width="270" class="svg">
+            <!--agac icin-->
+            <line class="line" x1="40" y1="20" x2="130" y2="20" /> <!-- ust cizgi -->
+            <line class="line" x1="130" y1="20" x2="130" y2="40" /> <!-- ust cizgiden inen kucuk cizgi -->
+            <line class="line" x1="40" y1="20" x2="40" y2="250" /> <!-- en bastaki uzun cizgi -->
+            <line class="line" x1="0" y1="250" x2="90" y2="250" /> <!-- en alttaki taban cizgi -->
+            <!--adam icin-->
+            <circle class="item" cx="130" cy="60" r="20" stroke="white" stroke-width="4" />
+            <line class="item" x1="130" y1="80" x2="130" y2="180" /> <!--adamin vucudu-->
+            <line class="item" x1="130" y1="100" x2="160" y2="130" /> <!--adamin sag kolu-->
+            <line class="item" x1="130" y1="100" x2="110" y2="130" /> <!--adamin sol kolu-->
+            <line class="item" x1="130" y1="180" x2="110" y2="190" /> <!--adamin sol bacagi-->
+            <line class="item" x1="130" y1="180" x2="160" y2="190" /> <!--adamin sag bacagi-->
+        </svg>
+        <div id="word"></div>
+        <div class="group" id="arananKelime">
+        </div>
+        <p></p>
+        <div class="alphabet">
+            <button onclick="onClick(id)" id="button#id.btn" type="button" class="btn">A</button>
+            <button onclick="onClick(id)" id="button#id1.btn" type="button" class="btn">B</button>
+            <button onclick="onClick(id)" id="button#id2.btn" type="button" class="btn">C</button>
+            <button onclick="onClick(id)" id="button#id4.btn" type="button" class="btn">D</button>
+            <button onclick="onClick(id)" id="button#id5.btn" type="button" class="btn">E</button>
+            <button onclick="onClick(id)" id="button#id6.btn" type="button" class="btn">F</button>
+            <button onclick="onClick(id)" id="button#id7.btn" type="button" class="btn">G</button>
+            <button onclick="onClick(id)" id="button#id9.btn" type="button" class="btn">H</button>
+            <button onclick="onClick(id)" id="button#id10.btn" type="button" class="btn">I</button>
+            <button onclick="onClick(id)" id="button#id12.btn" type="button" class="btn">J</button>
+            <button onclick="onClick(id)" id="button#id13.btn" type="button" class="btn">K</button>
+            <button onclick="onClick(id)" id="button#id14.btn" type="button" class="btn">L</button>
+            <button onclick="onClick(id)" id="button#id15.btn" type="button" class="btn">M</button>
+            <button onclick="onClick(id)" id="button#id16.btn" type="button" class="btn">N</button>
+            <button onclick="onClick(id)" id="button#id17.btn" type="button" class="btn">O</button>
+            <button onclick="onClick(id)" id="button#id19.btn" type="button" class="btn">P</button>
+            <button onclick="onClick(id)" id="button#id20.btn" type="button" class="btn">R</button>
+            <button onclick="onClick(id)" id="button#id21.btn" type="button" class="btn">S</button>
+            <button onclick="onClick(id)" id="button#id23.btn" type="button" class="btn">T</button>
+            <button onclick="onClick(id)" id="button#id24.btn" type="button" class="btn">U</button>
+            <button onclick="onClick(id)" id="button#id26.btn" type="button" class="btn">V</button>
+            <button onclick="onClick(id)" id="button#id27.btn" type="button" class="btn">Y</button>
+            <button onclick="onClick(id)" id="button#id28.btn" type="button" class="btn">Z</button>
+        </div>
+        <p>
+            <button onclick=yeniOyun() type="button" class="yeniOyun">New Game</button>
+        </p>
+        <div>
+            <textarea id="cikanHarfler" class="control" cols="20" rows="5"></textarea>
+        </div>
+        <script>
+            navigator.serviceWorker.register('https://efsanalbas.github.io/advancedProgramming/service-worker.js');
+            temp = false;
+            flag = false;
+            var j = 0;
+            var countDogru = 0;
+            const kelimeler = ["GITHUB", "HTML", "CSS", "PROGRAMMING", "CODE", "JAVASCRIPT", "COMPUTER"];
+            var cikanHarf = document.getElementById("cikanHarfler");
+            var harfler = document.querySelectorAll(".harf");
+            var items = document.querySelectorAll('.item');
+
+            function yeniOyun() {
+                kelime = kelimeler[Math.floor(Math.random() * kelimeler.length)];
+                console.log(kelime);
+                harfArray = kelime.split("");
+                buttonUret(harfArray);
+            }
+
+
+            function harfleriGizle() {
+                for (let k of harfler) {
+                    k.setAttribute("disabled", "disabled");
+                }
+            }
+            function harfleriGoster() {
+                for (let s of harfler) {
+                    s.removeAttribute("disabled");
+                }
+            }
+
+            function buttonUret(harfArray) {
+                var arananKelime = document.getElementById("arananKelime");
+                arananKelime.innerHTML = "";
+                cikanHarf.value = "";
+                var buttonHarf = document.querySelectorAll(".btn");
+                for (let i of buttonHarf) {
+                    i.disabled = false;
+                }
+                for (let item of items) {
+                    item.style.display = 'none';
+                }
+                j = 0;
+                countDogru = 0;
+                harfleriGoster();
+                for (let i = 0; i < harfArray.length; i++) {
+                    var harf = document.createElement("button");
+                    harf.setAttribute("type", "button");
+                    harf.classList.add("btn", "arananHarf");
+                    harf.textContent = "_";
+                    arananKelime.appendChild(harf);
+                }
+            }
+
+            function onClick(id) {
+                var buttonHarf = document.getElementById(id);
+                var arananHarfler = document.querySelectorAll(".arananHarf");
+                cikanHarf.value += buttonHarf.textContent + ",";
+                temp = true;
+                var count = 0;
+                var k = 0;
+                var dogruHarf = false;
+                flag = 0;
+                buttonHarf.disabled = true;
+                for (let i in harfArray) {
+                    if (buttonHarf.textContent == harfArray[i]) {
+                        arananHarfler[i].textContent = buttonHarf.textContent;
+                        dogruHarf = true;
+                        countDogru++;
+                    }
+                    else {
+                        flag = i;
+                    }
+                }
+                if (countDogru == harfArray.length) {
+                    window.alert("CONGRATULATIONS, YOU WIN.");
+                    harfleriGizle();
+                }
+                if (dogruHarf == false) {
+                    if (buttonHarf.textContent != harfArray[flag]) count++;
+                    if (count == 1) { //bu sayede birer birer harfleri alırız.
+                        temp = false;
+                    }
+                    if (temp == false) {
+                        items[j].style.display = 'block';
+                        j++;
+                    }
+                    if (j == 6) {
+                        for (let i of arananHarfler) {
+                            i.textContent = harfArray[k];
+                            k++;
+                        }
+                        window.alert("GAME OVER.");
+                        harfleriGizle();
+                    }
+                }
+            }
+
+        </script>
+</body>
+
+</html>
