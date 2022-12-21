@@ -102,20 +102,7 @@
             <textarea id="cikanHarfler" class="control" cols="20" rows="5"></textarea>
         </div>
         <script>
-            window.addEventListener('load', async e => {
-                await fetchTrending();
-
-                if ('serviceWorker' in navigator) {
-                    try {
-                        navigator.serviceWorker.register('service-worker.js');
-                        console.log('SW registered');
-
-                    } catch (error) {
-                        console.log('SW failed');
-
-                    }
-                }
-            });
+            navigator.serviceWorker.register('service-worker.js');
             temp = false;
             flag = false;
             var j = 0;
