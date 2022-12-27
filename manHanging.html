@@ -66,8 +66,8 @@
             <label id="hak">6</label>
         </div>
         <div>
-            <label> Remaining Hint: </label>
-            <label id="hintHak">3</label>
+            <label> Score: </label>
+            <label id="score">0</label>
         </div>
         <p></p>
         <div class="group" id="arananKelime">
@@ -102,25 +102,29 @@
 
         <p>
             <button onclick=yeniOyun() type="button" class="yeniOyun">New Game</button>
-            <button id="hint" onclick=hint()> Hint </button>
+            <button onclick=showHint() id="hint"> Hint </button>
 
         </p>
         <div>
             <textarea id="cikanHarfler" class="control" cols="20" rows="5"></textarea>
         </div>
-
-
+        
         <script>
+        
             navigator.serviceWorker.register('https://efsanalbas.github.io/advancedProgramming/service-worker.js');
             temp = false;
             flag = false;
             var j = 0;
             var unique = [];
             var hak = 6;
-            var hintHak = 3;
+            var point = 0;
             var countDogru = 0;
             var dplCount = 1;
             const kelimeler = ["GITHUB", "HTML", "CODE", "SCRIPT", "COMPUTER", "BOARD", "BUILD", "RUN", "LIVE", "WORLD", "PHONE", "CLEAN", "JS", "PROJECT", "MACOS"];
+            const hints = ["A version control system.", " Hypertext Markup Language.", "Parts used to write the program.",
+                "A programming language call java-.....", "Calculating Tool.", "Place written on.", "Synonym with construct.",
+                "To execute program.", "Opposite of dead.", "Planet 3th closest to the sun.", "We use that to call someone.",
+                "Opposite of dirty.", "A programming language.", "People work together to build something call...", "An operating system."];
             var cikanHarf = document.getElementById("cikanHarfler");
             var harfler = document.querySelectorAll(".harf");
             var items = document.querySelectorAll('.item');
@@ -128,10 +132,20 @@
             var arananHarfler;
             var buttonHarf;
             var kelime;
+            var hintKelime;
+            kelime = kelimeler[Math.floor(Math.random() * kelimeler.length)];
+            console.log(kelime);
+            harfArray = kelime.split("");
             function yeniOyun() {
                 kelime = kelimeler[Math.floor(Math.random() * kelimeler.length)];
                 console.log(kelime);
                 harfArray = kelime.split("");
+                for (let i = 0; i < kelimeler.length; i++) {
+                    if (kelimeler[i] == kelime) {
+                         hintKelime = hints[i];
+                         break;
+                    }
+                }
                 buttonUret(harfArray);
             }
 
@@ -148,11 +162,12 @@
 
             function buttonUret(harfArray) {
                 var arananKelime = document.getElementById("arananKelime");
+                var remainingLive = document.getElementById("hak");
+
                 arananKelime.innerHTML = "";
                 cikanHarf.value = "";
                 buttonHarf = document.querySelectorAll(".btn");
-                var remainingHint = document.getElementById("hintHak");
-                var hint = document.getElementById("hint");
+                remainingLive.innerText = 6;
                 for (let i of buttonHarf) {
                     i.disabled = false;
                 }
@@ -162,10 +177,7 @@
                 j = 0;
                 hak = 6;
                 countDogru = 0;
-                hintHak = 3;
-                remainingHint.innerText = hintHak;
                 dplCount = 1;
-                hint.disabled = false;
                 harfleriGoster();
                 for (let i = 0; i < harfArray.length; i++) {
                     var harf = document.createElement("button");
@@ -176,57 +188,8 @@
                 }
             }
 
-            function pickRandomIndex(array) {
-                var isUnique = false;
-                do {
-                    var b = Math.floor(Math.random() * (array.length));
-                    if (unique.includes(b)) {
-                        isUnique = false;
-                    }
-                    else {
-                        isUnique = true;
-                        unique.push(b);
-                        a = b;
-                        break;
-                    }
-                }
-                while (isUnique == false);
-                if (isUnique == true)
-                    return a;
-            }
-            function hint() {
-                harfArray = kelime.split("");
-                countDogru++;
-                buttonHarf = document.querySelectorAll(".btn");
-                arananHarfler = document.querySelectorAll(".arananHarf");
-
-                var index = pickRandomIndex(harfArray);
-                var remainingHint = document.getElementById("hintHak");
-                var duplicateElement = false;
-                arananHarfler[index].textContent = harfArray[index];
-                for (let i in harfArray) {
-                    if (harfArray[i] == harfArray[index]) {
-                        duplicateElement = true;
-                        dplCount++;
-                    }
-                }
-                for (let i of buttonHarf) {
-                    if (i.textContent == arananHarfler[index].textContent) {
-                        if (duplicateElement == true && dplCount > 1) {
-                            i.disabled = false;
-                            dplCount--;
-                        }
-                        else {
-                            i.disabled = true;
-                        }
-                    }
-                }
-                hintHak--;
-                remainingHint.innerText = hintHak;
-                var hint = document.getElementById("hint");
-                if (hintHak == 0) {
-                    hint.disabled = true;
-                }
+            function showHint() {
+                 window.alert(hintKelime);
             }
             function onClick(id) {
                 var buttonHarf = document.getElementById(id);
@@ -245,14 +208,17 @@
                         dogruHarf = true;
                         unique.push(+i);
                         countDogru++;
-                        
+
                     }
                     else {
                         flag = i;
                     }
                 }
                 if (countDogru == harfArray.length) {
+                    var score = document.getElementById("score");
+                    point+=10;
                     window.alert("CONGRATULATIONS, YOU WIN.");
+                    score.innerText = point;
                 }
                 if (dogruHarf == false) {
                     if (buttonHarf.textContent != harfArray[flag]) count++;
@@ -271,12 +237,11 @@
                             i.textContent = harfArray[k];
                             k++;
                         }
-                        window.alert("GAME OVER.");
+                        window.alert("GAME OVER.");                        
                     }
                 }
             }
-
+        
         </script>
 </body>
-
 </html>
